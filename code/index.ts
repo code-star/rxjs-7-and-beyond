@@ -1,15 +1,15 @@
-import { EMPTY, lastValueFrom, of } from 'rxjs';
+import { interval, of, throwError } from "rxjs";
+import { switchScan } from "rxjs/operators";
 
 const start = async () => {
-    const abc = of('a', 'b', 'c')
-    const empty = of()
+  const source = of(1, 2, 3)
+  const example = source.pipe(
+    switchScan((acc, value) => {
+        return of(acc + value)
+    }, 0)
+  );
 
-    try {
-        const lastValue = await lastValueFrom(empty)
-        console.log(lastValue)
-    } catch (error) {
-        console.log(error);
-    }
-}
+  example.subscribe(console.log);
+};
 
 start();
