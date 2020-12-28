@@ -1,18 +1,33 @@
-# RxJS 7 & Beyond
+# RxJS 7: 
 
 ## Introduction
 
-...
+<div>
+  <img src="martin.jpg" width="100" style="border-radius:100%; display: inline-flex;">
+  <h1 style="font-size: 0.9em;">Martin van Dam</h1>
+<small>Frontend Software Engineer @ Philips</small>
+  <img src="https://avatars1.githubusercontent.com/u/21951794?s=460&u=1268386b280e20557f28611591e797492a140c08&v=4" height="30" style="border: 0; background-color: transparent; position: relative" /> 
+  <small>@MrtnvDam / martin.van.dam@ordina.nl</small>
+</div>
 
 ## What is RxJS
 
-...
+- Reactive programming in the Frontend
+- A better way to manage data and events within your app.
 
 ## Why RxJS
 
-...
+- Better readable code 🤓
+- Data flow 🌊
+- Easier and safer data transformations 🤖
+- Functional and Reactive (!) 🙌
 
 ## What's new in RxJS 7
+
+- New methods
+- New & renamed Operators
+- Improved configuration options
+- Improved typings
 
 ### New method `firstValueFrom`
 
@@ -156,6 +171,7 @@ const example = source.pipe(
 ```
 
 ### Improved typings for `groupBy` operator (Type Guard support)
+
 ```ts
 function isPerson(value: Person | Pet): value is Person {
   return value.hasOwnProperty("name");
@@ -183,46 +199,62 @@ const o = of(person, pet).pipe(
 **Former API:**
 
 ```ts
-const nums$ = of(1, 2, 3)
-const chars$ = of('a', 'b', 'c')
-const bools$ = of(true, false, false)
+const nums$ = of(1, 2, 3);
+const chars$ = of("a", "b", "c");
+const bools$ = of(true, false, false);
 
-const example = combineLatest(nums$, chars$, bools$)
+const example = combineLatest(nums$, chars$, bools$);
 // -> [ 3, 'c', true ]
 ```
 
 **New API:**
 
 ```ts
-const nums$ = of(1, 2, 3)
-const chars$ = of('a', 'b', 'c')
-const bools$ = of(true, false, false)
+const nums$ = of(1, 2, 3);
+const chars$ = of("a", "b", "c");
+const bools$ = of(true, false, false);
 
 const example = combineLatest({
-    number: nums$,
-    character: chars$,
-    boolean: bools$
-})
+  number: nums$,
+  character: chars$,
+  boolean: bools$,
+});
 // -> { number: 3, character: 'c', boolean: true }
 ```
 
 ### Extended configuration for `timeout`
 
-...
+The `timout` operator is now more configurable.
+Before; only the `due` and the `scheduler` could be provided.
+
+Now; you can also configure:
+
+- `each`: The time allowed between values from the source before timeout is triggered.
+- `first`: Point in time where the first value should have been emitted
+- `with`: A factory used to create observable to switch to when timeout occurs (i.e. throw error)
+- `meta`: Additional metadata you can provide to code that handles the timeout
 
 ### Other noteworthy changes
 
 - Memory usage reduced in most operators by not retaining outer values
 - Improved typings for `filter`, `groupBy`, `combineLatest`
-- TestScheduler
+- Improved TestScheduler which now accepts marble diagrams
 - Wwhole bunch of bugs are fixed
 - A few breaking changes
 
-## What's next?
+## When can I use all this? 😍
 
-... rxjs > 8
+Right now! At the time of this writing, `7.0.0-beta.9` is out and ready to use. It's very stable already, but it can still contain some bugs.
+
+The original plan for releasing RxJS 7 was by the end of 2020. This is delayed to early 2021 to be able to finish the TypeScript typings and updated documentation.
+
+## Thanks!
+
+And have fun with all the new goodies of RxJS 7! 👐
 
 ## Sources
 
-- https://github.com/ReactiveX/rxjs/issues/5795
-- https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md
+- [RxJS 7 Roadmap](https://github.com/ReactiveX/rxjs/issues/5795)
+- [RxJS Changelog](https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md)
+- [RxJS 7 release delay](https://twitter.com/BenLesh/status/1335776969611415552)
+
