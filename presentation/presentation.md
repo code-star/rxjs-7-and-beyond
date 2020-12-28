@@ -1,19 +1,25 @@
-# RxJS 7: 
+# RxJS 7 and Beyond
+
+---
 
 ## Introduction
 
 <div>
-  <img src="martin.jpg" width="100" style="border-radius:100%; display: inline-flex;">
+  <img src="https://avatars1.githubusercontent.com/u/21951794?s=460&u=1268386b280e20557f28611591e797492a140c08&v=4" width="100" style="border-radius:100%; display: inline-flex;">
   <h1 style="font-size: 0.9em;">Martin van Dam</h1>
 <small>Frontend Software Engineer @ Philips</small>
-  <img src="https://avatars1.githubusercontent.com/u/21951794?s=460&u=1268386b280e20557f28611591e797492a140c08&v=4" height="30" style="border: 0; background-color: transparent; position: relative" /> 
+  <img src="https://github.com/code-star/rxjs-101/blob/master/presentation/codestar.svg" height="30" style="border: 0; background-color: transparent; position: relative" /> 
   <small>@MrtnvDam / martin.van.dam@ordina.nl</small>
 </div>
+
+---
 
 ## What is RxJS
 
 - Reactive programming in the Frontend
 - A better way to manage data and events within your app.
+
+---
 
 ## Why RxJS
 
@@ -22,6 +28,8 @@
 - Easier and safer data transformations 🤖
 - Functional and Reactive (!) 🙌
 
+---
+
 ## What's new in RxJS 7
 
 - New methods
@@ -29,11 +37,15 @@
 - Improved configuration options
 - Improved typings
 
+---
+
 ### New method `firstValueFrom`
 
 Subscribes to the source Observable and returns a new Promise. When the first value from the source Observable is received it will resolve the Promise.
 
 When no value is received, it will reject with EmptyError.
+
+---
 
 #### Example `firstValueFrom`
 
@@ -44,6 +56,8 @@ const abc = of("a", "b", "c");
 const firstValue = await firstValueFrom(abc);
 // -> 'a'
 ```
+
+---
 
 #### Example `firstValueFrom` with error
 
@@ -59,11 +73,15 @@ try {
 }
 ```
 
+---
+
 ### New method `lastValueFrom`
 
 Subscribes to the source Observable and returns a new Promise. When the source Observable subsciptions closes it resolves the Promise.
 
 When no value is received, it will reject with EmptyError, just like `firstValueFrom`.
+
+---
 
 #### Example `lastValueFrom`
 
@@ -74,6 +92,8 @@ const abc = of("a", "b", "c");
 const firstValue = await lastValueFrom(abc);
 // -> 'c'
 ```
+
+---
 
 #### Example `lastValueFrom` with error
 
@@ -89,9 +109,13 @@ try {
 }
 ```
 
+---
+
 ### New operator `concatWith`
 
 Emits all of the values from the source observable, then, once it completes, subscribes to each observable source provided, one at a time, emitting all of their values, and not subscribing to the next one until it completes.
+
+---
 
 #### Example `concatWith` operator
 
@@ -110,6 +134,8 @@ clicks.pipe(
 // -> 'click', 'move', 'move', 'move'
 ```
 
+---
+
 ### New operator `switchScan`
 
 The new `switchScan` operator, a proposal from 2017 is now added.
@@ -117,6 +143,8 @@ The new `switchScan` operator, a proposal from 2017 is now added.
 Applies an accumulator function over the source Observable where the accumulator function itself returns an Observable, emitting values only from the most recently returned Observable. It works the `switchMap` operator under the hood.
 
 It works similar to `Array.reduce` in plain Javascript.
+
+---
 
 #### Example `switchScan` operator
 
@@ -133,6 +161,8 @@ const example = source.pipe(
 // -> 1, 3, 6
 ```
 
+---
+
 ### Renamed operators
 
 A couple of operators are renamed for consistency and to make it more clear that the source Observable is also used in the operation.
@@ -143,11 +173,15 @@ A couple of operators are renamed for consistency and to make it more clear that
 
 At this point it's still possible to use the former operator names but they are marked as deprecated.
 
+---
+
 ### Extended configuration options for `retry`
 
 The `retry` operator now accepts a configuration object. We now can now also configure the operator to reset itself on a successful retry.
 
 The option `resetOnSuccess` defaults to `false`. You can also still use the former notation: `retry(2)`.
+
+---
 
 #### Example `retry` configuration
 
@@ -169,6 +203,8 @@ const example = source.pipe(
   })
 );
 ```
+
+---
 
 ### Improved typings for `groupBy` operator (Type Guard support)
 
@@ -194,6 +230,8 @@ const o = of(person, pet).pipe(
 );
 ```
 
+---
+
 ### Dictonary support for `combineLatest`
 
 **Former API:**
@@ -206,6 +244,8 @@ const bools$ = of(true, false, false);
 const example = combineLatest(nums$, chars$, bools$);
 // -> [ 3, 'c', true ]
 ```
+
+---
 
 **New API:**
 
@@ -222,6 +262,8 @@ const example = combineLatest({
 // -> { number: 3, character: 'c', boolean: true }
 ```
 
+---
+
 ### Extended configuration for `timeout`
 
 The `timout` operator is now more configurable.
@@ -234,6 +276,8 @@ Now; you can also configure:
 - `with`: A factory used to create observable to switch to when timeout occurs (i.e. throw error)
 - `meta`: Additional metadata you can provide to code that handles the timeout
 
+---
+
 ### Other noteworthy changes
 
 - Memory usage reduced in most operators by not retaining outer values
@@ -242,15 +286,21 @@ Now; you can also configure:
 - Wwhole bunch of bugs are fixed
 - A few breaking changes
 
+---
+
 ## When can I use all this? 😍
 
 Right now! At the time of this writing, `7.0.0-beta.9` is out and ready to use. It's very stable already, but it can still contain some bugs.
 
 The original plan for releasing RxJS 7 was by the end of 2020. This is delayed to early 2021 to be able to finish the TypeScript typings and updated documentation.
 
+---
+
 ## Thanks!
 
 And have fun with all the new goodies of RxJS 7! 👐
+
+---
 
 ## Sources
 
