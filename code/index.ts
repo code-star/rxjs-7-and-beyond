@@ -1,15 +1,22 @@
-import { interval, of, throwError } from "rxjs";
-import { switchScan } from "rxjs/operators";
+import { of, combineLatest } from "rxjs";
+import { combineLatestWith } from "rxjs/operators";
 
 const start = async () => {
-  const source = of(1, 2, 3)
-  const example = source.pipe(
-    switchScan((acc, value) => {
-        return of(acc + value)
-    }, 0)
-  );
+  const nums$ = of(1, 2, 3)
+  const chars$ = of('a', 'b', 'c')
+  const bools$ = of(true, false, false)
 
-  example.subscribe(console.log);
+    const example = combineLatest({
+        n: nums$,
+        c: chars$,
+        b: bools$
+    })
+
+    example.subscribe(console.log)
+
+    const example2 = combineLatest(nums$, chars$, bools$)
+
+    example2.subscribe(console.log)
 };
 
 start();
