@@ -1,22 +1,29 @@
-import { of, combineLatest } from "rxjs";
-import { combineLatestWith } from "rxjs/operators";
+import { of } from "rxjs";
+import { groupBy, mergeMap, concatWith, concat } from "rxjs/operators";
 
 const start = async () => {
-  const nums$ = of(1, 2, 3)
-  const chars$ = of('a', 'b', 'c')
-  const bools$ = of(true, false, false)
+  type Person = { name: string };
+  type Pet = { kind: "cat" | "dog" };
 
-    const example = combineLatest({
-        n: nums$,
-        c: chars$,
-        b: bools$
+  function isPerson(value: Person | Pet): value is Person {
+    return "name" in value;
+  }
+
+  const person: Person = { name: "Judy" };
+  const pet: Pet = { kind: "cat" };
+
+  const o = of(person, pet).pipe(
+    groupBy(isPerson),
+    mergeMap((group) => {
+      if (group.key) {
+        const inferred = group; // -> Person
+        return inferred;
+      } else {
+        const inferred = group; // -> Pet
+        return inferred;
+      }
     })
-
-    example.subscribe(console.log)
-
-    const example2 = combineLatest(nums$, chars$, bools$)
-
-    example2.subscribe(console.log)
+  );
 };
 
 start();
