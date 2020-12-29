@@ -10,7 +10,8 @@
     "typescript": "^4.1.3"
   },
   "scripts": {
-    "start": "ts-node ./code/index",
-    "present": "reveal-md ./presentation/presentation.md"
+    "sandbox": "ts-node ./code/index",
+    "present": "reveal-md ./presentation/presentation.md",
+    "export": "reveal-md  ./presentation/presentation.md --print whats-new-in-rxjs-7.pdf"
   }
 }

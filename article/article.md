@@ -1,6 +1,4 @@
-<img src="https://raw.githubusercontent.com/ReactiveX/rxjs/master/docs_app/assets/Rx_Logo_S.png" alt="" height="80px" />
-
-# New in RxJS 7
+# RxJS 7 and Beyond
 
 ---
 
@@ -57,6 +55,8 @@ When no value is received, it will reject with EmptyError.
 `firstValueFrom`
 
 ```ts
+import { of, firstValueFrom } from "rxjs";
+
 const abc = of("a", "b", "c");
 const firstValue = await firstValueFrom(abc);
 // -> 'a'
@@ -97,6 +97,8 @@ When no value is received, it will reject with EmptyError, just like `firstValue
 `lastValueFrom`
 
 ```ts
+import { of, lastValueFrom } from "rxjs";
+
 const abc = of("a", "b", "c");
 const firstValue = await lastValueFrom(abc);
 // -> 'c'
@@ -109,6 +111,8 @@ const firstValue = await lastValueFrom(abc);
 `lastValueFrom`
 
 ```ts
+import { of, lastValueFrom } from "rxjs";
+
 const empty = of();
 
 try {
@@ -133,6 +137,9 @@ Emits all of the values from the source observable, then, once it completes, sub
 `concatWith`
 
 ```ts
+import { fromEvent } from "rxjs";
+import { concatWith } from "rxjs/operators";
+
 const clicks = fromEvent(document, "click");
 const moves = fromEvent(document, "mousemove");
 
@@ -154,13 +161,16 @@ The new `switchScan` operator, a proposal from 2017 is now added.
 
 Applies an accumulator function over the source Observable where the accumulator function itself returns an Observable, emitting values only from the most recently returned Observable. It works the `switchMap` operator under the hood.
 
+It works similar to `Array.reduce` in plain Javascript.
+
 ---
 
-#### Example
-
-`switchScan`
+#### Example `switchScan` operator
 
 ```ts
+import { of } from "rxjs";
+import { switchScan } from "rxjs/operators";
+
 const source = of(1, 2, 3);
 const example = source.pipe(
   switchScan((acc, value) => {
@@ -176,19 +186,15 @@ const example = source.pipe(
 
 A couple of operators are renamed for consistency and to make it more clear that the source Observable is also used in the operation.
 
-At this point it's still possible to use the former operator names but they are marked as deprecated.
-
----
-
 - `combineLatest` -> `combineLatestWith`
 - `zip` -> `zipWith`
 - `race` -> `raceWith`
 
+At this point it's still possible to use the former operator names but they are marked as deprecated.
+
 ---
 
-### Extended configuration
-
-`retry`
+### Extended configuration options for `retry`
 
 The `retry` operator now accepts a configuration object. We now can now also configure the operator to reset itself on a successful retry.
 
@@ -199,6 +205,9 @@ The option `resetOnSuccess` defaults to `false`. You can also still use the form
 #### Example `retry` configuration
 
 ```ts
+import { interval, of, throwError } from "rxjs";
+import { mergeMap, retry } from "rxjs/operators";
+
 const source = interval(1000);
 const example = source.pipe(
   mergeMap((val) => {
@@ -216,9 +225,7 @@ const example = source.pipe(
 
 ---
 
-### Improved typings
-
-`groupBy`
+### Improved typings for `groupBy` operator (Type Guard support)
 
 ```ts
 function isPerson(value: Person | Pet): value is Person {
@@ -244,12 +251,11 @@ const o = of(person, pet).pipe(
 
 ---
 
-### Dictonary support
+### Dictonary support for `combineLatest`
 
-`combineLatest`
+**Former API:**
 
 ```ts
-// Before:
 const nums$ = of(1, 2, 3);
 const chars$ = of("a", "b", "c");
 const bools$ = of(true, false, false);
@@ -260,8 +266,9 @@ const example = combineLatest(nums$, chars$, bools$);
 
 ---
 
+**New API:**
+
 ```ts
-// After:
 const nums$ = of(1, 2, 3);
 const chars$ = of("a", "b", "c");
 const bools$ = of(true, false, false);
@@ -276,14 +283,12 @@ const example = combineLatest({
 
 ---
 
-### Extended configuration
-
-`timeout`
+### Extended configuration for `timeout`
 
 The `timout` operator is now more configurable.
 Before; only the `due` and the `scheduler` could be provided.
 
----
+Now; you can also configure:
 
 - `each`: The time allowed between values from the source before timeout is triggered.
 - `first`: Point in time where the first value should have been emitted
@@ -294,15 +299,19 @@ Before; only the `due` and the `scheduler` could be provided.
 
 ### Other noteworthy changes
 
-- Memory usage reduced
+- Memory usage reduced in most operators by not retaining outer values
 - Improved typings for `filter`, `groupBy`, `combineLatest`
-- Improved TestScheduler
-- Bugfixes
+- Improved TestScheduler which now accepts marble diagrams
+- Wwhole bunch of bugs are fixed
 - A few breaking changes
 
 ---
 
 ## When can I use all this? 😍
+
+Right now! At the time of this writing, `7.0.0-beta.9` is out and ready to use. It's very stable already, but it can still contain some bugs.
+
+The original plan for releasing RxJS 7 was by the end of 2020. This is delayed to early 2021 to be able to finish the TypeScript typings and updated documentation.
 
 ---
 
