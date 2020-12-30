@@ -2,12 +2,12 @@
 
 [RxJS](https://rxjs.dev/); one of my all-time favourite libraries is very close to releasing a new major version. Version 7 is currently in beta but is expected to release early 2021. This article briefly points out the changes of the upcoming release.
 
-Disclaimer: this article is based on the changes until `7.0.0-beta.9`.
+Disclaimer: this article is based on the changes up to `7.0.0-beta.9`.
 
 _TLDR:_
 
-- 2 New methods are added,
-- 2 New operators are added,
+- 2 New methods added,
+- 2 New operators added,
 - Reduced memory consumption and footprint,
 - Improved configuration options,
 - Improved typings.
@@ -44,7 +44,7 @@ try {
 
 ### `lastValueFrom`
 
-Subscribes to the source Observable and returns a new Promise. When the source Observable subsciptions closes it resolves the Promise.
+Subscribes to the source Observable and returns a new Promise. When the source Observable subscription closes it resolves the Promise.
 
 ```ts
 import { of, lastValueFrom } from "rxjs";
@@ -188,7 +188,7 @@ const o = of(person, pet).pipe(
 );
 ```
 
-We now have improved types when using a different operator after `groupBy`. In the example above we group by `isPerson`. When `group.key` equals to `true` it means that the current group matches our `groupBy` condition. This means that we have intellisense for the `Person` type here, and intellisens for the `Pet` type in the `else` clause. This is a great way to make our code more secure and not have to use typecasts as we had to do before.
+We now have improved types when using a different operator after `groupBy`. In the example above we group by `isPerson()`. When `group.key` equals to `true` it means that the current group matches our `groupBy` condition. This means that we have intellisense for the `Person` type here, and intellisense for the `Pet` type in the `else` clause. This is a great way to make our code more secure and not have to use typecasts as we had to do before.
 
 ## Dictonary support for `combineLatest`
 
@@ -241,7 +241,7 @@ Now; you can also configure:
 - Improved typings for `filter`, `groupBy`, `combineLatest`,
 - Improved TestScheduler which now accepts marble diagrams,
 - Wwhole bunch of bugs are fixed,
-- A few breaking changes.
+- A few [breaking changes](https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md).
 
 ## When can I use all this? 😍
 
