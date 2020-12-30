@@ -2,7 +2,7 @@
 
 [RxJS](https://rxjs.dev/); one of my all-time favourite libraries is very close to releasing a new major version. Version 7 is currently in beta but is expected to release early 2021. This article briefly points out the changes of the upcoming release.
 
-Disclaimer: this article is based on the changes up to `7.0.0-beta.9`.
+Disclaimer: this article is based on the changes up to version `7.0.0-beta.9`.
 
 _TLDR:_
 
@@ -226,9 +226,9 @@ This is a nice way to improve the format of the combination result. No need anym
 
 The `timout` operator is now more configurable.
 
-Before; only the `due` and the `scheduler` could be provided.
+Only the `due` and the `scheduler` could be provided before.
 
-Now; you can also configure:
+Now you can also configure:
 
 - `each`: The time allowed between values from the source before timeout is triggered,
 - `first`: Point in time where the first value should have been emitted,
@@ -237,15 +237,15 @@ Now; you can also configure:
 
 ## Other noteworthy changes
 
-- Memory usage reduced in most operators by not retaining outer values,
-- Improved typings for `filter`, `groupBy`, `combineLatest`,
-- Improved TestScheduler which now accepts marble diagrams,
-- Wwhole bunch of bugs are fixed,
+- Memory usage [reduced](https://github.com/ReactiveX/rxjs/pull/5610) in most operators by not retaining outer values,
+- Improved typings for `filter`, `groupBy` and `combineLatest`,
+- Improved TestScheduler which now accepts marble diagrams (more about this in a later post),
+- Whole bunch of bugs fixed,
 - A few [breaking changes](https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md).
 
 ## When can I use all this? 😍
 
-Right now! At the time of this writing, `7.0.0-beta.9` is out and ready to use. It's very stable already, but it can still contain some bugs.
+Right now! At the time of this writing version `7.0.0-beta.9` is out and ready to use. It's very stable already, but it can still contain some bugs.
 
 The original plan for releasing RxJS 7 was by the end of 2020. This is delayed to early 2021 to be able to finish the TypeScript typings and updated documentation.
 
