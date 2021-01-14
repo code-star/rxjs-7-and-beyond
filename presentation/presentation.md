@@ -20,7 +20,7 @@
 </div>
 
 <aside class="notes">
-  Developer for over 16 years, working with Functional, Reactive frontends, Codestar, Ordina, Philips
+  Developer for over 16 years, working with Functional, Reactive frontends, Codestar, Ordina, hired by Philips Research
 </aside>
 
 ---
@@ -177,7 +177,7 @@ try {
 
 `concatWith`
 
-- Subscribes to input
+- Subscribes to input observable
 - Waits until completion and subscribes to second
 
 <aside class="notes">
@@ -266,22 +266,93 @@ const example = source.pipe(
 
 ---
 
-#### Example `retry` configuration
+`retry`
 
 ```ts
-const source = interval(1000);
+// before
+const source = fromFetch('https://can-randomly-fail.com');
 const example = source.pipe(
-  mergeMap((val) => {
-    if (val > 5) {
-      return throwError(() => new Error("Error!"));
-    }
-    return of(val);
-  }),
+  retry(2)
+);
+```
+
+---
+
+`retry`
+
+```ts
+// after
+const source = fromFetch('https://can-randomly-fail.com');
+const example = source.pipe(
   retry({
     count: 2,
     resetOnSuccess: true, // new!
   })
 );
+```
+
+<aside class="notes">
+  Please not that the previous API (retry(2)) will still be supported
+</aside>
+
+---
+
+### Extended configuration
+
+`timeout`
+
+- Configuration options extended
+
+<aside class="notes">
+  The `timout` operator is now more configurable.
+  Before; only the `due` and the `scheduler` could be provided.
+</aside>
+
+---
+
+`timeout`
+
+```ts
+// before
+const seconds = interval(1000);
+const delayed = seconds.pipe(
+  timeout(1100)
+);   
+```
+
+---
+
+`timeout`
+
+- `each`
+- `first`
+- `with`
+- `meta`
+
+<aside class="notes">
+  - `each`: The time allowed between values from the source before timeout is triggered.
+  - `first`: Point in time where the first value should have been emitted
+  - `with`: A factory used to create observable to switch to when timeout occurs (i.e. throw error)
+  - `meta`: Additional metadata you can provide to code that handles the timeout
+</aside>
+
+---
+
+`timeout`
+
+```ts
+// after
+const seconds = interval(1000);
+const delayed = seconds.pipe(
+  timeout({
+    each: 1100,
+    first: 5000,
+    with: () => throwError(new NoValueReceivedError()),
+    meta: {
+      some: 'metadata'
+    },
+  });
+);   
 ```
 
 ---
@@ -346,33 +417,6 @@ const example = combineLatest({
 
 ---
 
-### Extended configuration
-
-`timeout`
-
-- Configuration options extended
-
-<aside class="notes">
-  The `timout` operator is now more configurable.
-  Before; only the `due` and the `scheduler` could be provided.
-</aside>
-
----
-
-- `each`
-- `first`
-- `with`
-- `meta`
-
-<aside class="notes">
-  - `each`: The time allowed between values from the source before timeout is triggered.
-  - `first`: Point in time where the first value should have been emitted
-  - `with`: A factory used to create observable to switch to when timeout occurs (i.e. throw error)
-  - `meta`: Additional metadata you can provide to code that handles the timeout
-</aside>
-
----
-
 ### Other noteworthy changes
 
 - Memory usage reduced
@@ -403,8 +447,13 @@ const example = combineLatest({
 
 And have fun with all the new goodies of RxJS 7! 👐
 
+<small>@MrtnvDam / martin.van.dam@ordina.nl</small>
+
 <aside class="notes">
-  Thanks for joining, back to host, answer questions
+  - Thanks for joining
+  - Slides available via Twitter
+  - Reach me here
+  - Back to host, answer questions
 </aside>
 
 ---
@@ -414,4 +463,3 @@ And have fun with all the new goodies of RxJS 7! 👐
 - [RxJS 7 Roadmap](https://github.com/ReactiveX/rxjs/issues/5795)
 - [RxJS Changelog](https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md)
 - [RxJS 7 release delay](https://twitter.com/BenLesh/status/1335776969611415552)
-
