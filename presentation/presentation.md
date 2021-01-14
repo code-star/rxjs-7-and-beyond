@@ -2,6 +2,10 @@
 
 # New in RxJS 7
 
+<aside class="notes">
+  Thanks for joining, short talk, RxJS knowledge might help
+</aside>
+
 ---
 
 ## Introduction
@@ -15,21 +19,29 @@
   <small>@MrtnvDam / martin.van.dam@ordina.nl</small>
 </div>
 
+<aside class="notes">
+  Developer for over 16 years, working with Functional, Reactive frontends, Codestar, Ordina, Philips
+</aside>
+
 ---
 
 ## What is RxJS
 
-- Reactive programming in the Frontend
-- A better way to manage data and events within your app.
+- Reactive programming in the Frontend & Node
+- A (better) way to manage data and events within your app.
+
+<aside class="notes">
+  Reactive Extensions, for multiple languages
+</aside>
 
 ---
 
 ## Why RxJS
 
-- Better readable code 🤓
-- Data flow 🌊
-- Easier and safer data transformations 🤖
-- Functional and Reactive (!) 🙌
+- Functional and Reactive
+- Better readable code
+- Data flow
+- Easier and safer data transformations
 
 ---
 
@@ -40,19 +52,49 @@
 - Improved configuration options
 - Improved typings
 
+<aside class="notes">
+  In this talk I will tell more about...
+</aside>
+
 ---
 
 ### New method
 
 `firstValueFrom`
 
-Subscribes to the source Observable and returns a new Promise. When the first value from the source Observable is received it will resolve the Promise.
+- First value of stream
+- Unsubscribes
 
-When no value is received, it will reject with EmptyError.
+<aside class="notes">
+  Subscribes to the source Observable and returns a new Promise. When the first value from the source Observable is received it will resolve the Promise.
+  When no value is received, it will reject with EmptyError.
+</aside>
 
 ---
 
-#### Example 1
+`.toPromise()`
+
+```ts
+// before v7
+const abc = of("a", "b", "c");
+const someValue = await abc.toPromise();
+// -> 'c'
+```
+
+<aside class="notes">
+  Tricky to manage yourself, wrapper required
+  Does not work nice with empty observables (undefined), will not reject for example
+</aside>
+
+---
+
+<img src="./topromise.png" alt="" />
+
+<aside class="notes">
+  toPromise deprecated from v7, removed from v8
+</aside>
+
+---
 
 `firstValueFrom`
 
@@ -64,7 +106,18 @@ const firstValue = await firstValueFrom(abc);
 
 ---
 
-#### Example 2
+```ts
+// before v7
+const empty = of();
+const someValue = await empty.toPromise();
+// -> undefined (?)
+```
+
+<aside class="notes">
+  Does not reject!
+</aside>
+
+---
 
 `firstValueFrom`
 
@@ -86,13 +139,15 @@ try {
 
 `lastValueFrom`
 
-Subscribes to the source Observable and returns a new Promise. When the source Observable subsciptions closes it resolves the Promise.
+- Last value of stream
+- Resolves when completed
 
-When no value is received, it will reject with EmptyError, just like `firstValueFrom`.
+<aside class="notes">
+  Subscribes to the source Observable and returns a new Promise. When the source Observable subsciptions closes it resolves the Promise.
+  When no value is received, it will reject with EmptyError, just like `firstValueFrom`.
+</aside>
 
 ---
-
-#### Example 1
 
 `lastValueFrom`
 
@@ -103,8 +158,6 @@ const firstValue = await lastValueFrom(abc);
 ```
 
 ---
-
-#### Example 2
 
 `lastValueFrom`
 
@@ -124,7 +177,12 @@ try {
 
 `concatWith`
 
-Emits all of the values from the source observable, then, once it completes, subscribes to each observable source provided, one at a time, emitting all of their values, and not subscribing to the next one until it completes.
+- Subscribes to input
+- Waits until completion and subscribes to second
+
+<aside class="notes">
+  Emits all of the values from the source observable, then, once it completes, subscribes to each observable source provided, one at a time, emitting all of their values, and not subscribing to the next one until it completes.
+</aside>
 
 ---
 
@@ -138,7 +196,6 @@ const moves = fromEvent(document, "mousemove");
 
 clicks.pipe(
   map(() => "click"),
-  take(1),
   concatWith(moves.pipe(map(() => "move")))
 );
 // -> 'click', 'move', 'move', 'move'
@@ -150,9 +207,14 @@ clicks.pipe(
 
 `switchScan`
 
-The new `switchScan` operator, a proposal from 2017 is now added.
+- Proposed in 2017
+- Uses `switchMap` under the hood
+- Works like `reduce`
 
-Applies an accumulator function over the source Observable where the accumulator function itself returns an Observable, emitting values only from the most recently returned Observable. It works the `switchMap` operator under the hood.
+<aside class="notes">
+  The new `switchScan` operator, a proposal from 2017 is now added.
+  Applies an accumulator function over the source Observable where the accumulator function itself returns an Observable, emitting values only from the most recently returned Observable. It uses `switchMap` under the hood.
+</aside>
 
 ---
 
@@ -174,9 +236,13 @@ const example = source.pipe(
 
 ### Renamed operators
 
-A couple of operators are renamed for consistency and to make it more clear that the source Observable is also used in the operation.
+- Improved consistency & readability
+- Deprecated in v7, removed in v8
 
-At this point it's still possible to use the former operator names but they are marked as deprecated.
+<aside class="notes">
+  A couple of operators are renamed for consistency and to make it more clear that the source Observable is also used in the operation.
+  At this point it's still possible to use the former operator names but they are marked as deprecated.
+</aside>
 
 ---
 
@@ -190,9 +256,13 @@ At this point it's still possible to use the former operator names but they are 
 
 `retry`
 
-The `retry` operator now accepts a configuration object. We now can now also configure the operator to reset itself on a successful retry.
+- Accepts config object
+- `resetOnSuccess` option added
 
-The option `resetOnSuccess` defaults to `false`. You can also still use the former notation: `retry(2)`.
+<aside class="notes">
+  The `retry` operator now accepts a configuration object. We now can now also configure the operator to reset itself on a successful retry.
+  The option `resetOnSuccess` defaults to `false`. You can also still use the former notation: `retry(2)`.
+</aside>
 
 ---
 
@@ -280,15 +350,26 @@ const example = combineLatest({
 
 `timeout`
 
-The `timout` operator is now more configurable.
-Before; only the `due` and the `scheduler` could be provided.
+- Configuration options extended
+
+<aside class="notes">
+  The `timout` operator is now more configurable.
+  Before; only the `due` and the `scheduler` could be provided.
+</aside>
 
 ---
 
-- `each`: The time allowed between values from the source before timeout is triggered.
-- `first`: Point in time where the first value should have been emitted
-- `with`: A factory used to create observable to switch to when timeout occurs (i.e. throw error)
-- `meta`: Additional metadata you can provide to code that handles the timeout
+- `each`
+- `first`
+- `with`
+- `meta`
+
+<aside class="notes">
+  - `each`: The time allowed between values from the source before timeout is triggered.
+  - `first`: Point in time where the first value should have been emitted
+  - `with`: A factory used to create observable to switch to when timeout occurs (i.e. throw error)
+  - `meta`: Additional metadata you can provide to code that handles the timeout
+</aside>
 
 ---
 
@@ -297,18 +378,34 @@ Before; only the `due` and the `scheduler` could be provided.
 - Memory usage reduced
 - Improved typings for `filter`, `groupBy`, `combineLatest`
 - Improved TestScheduler
+- Minor breaking changes
 - Bugfixes
-- A few breaking changes
+
+<aside class="notes">
+  - Previously retained values dropped
+  - Improved typings
+  - The animate helper accepts a marble diagram and each value emission in the diagram indicates when a “paint” occurs
+  - toPromise can return undefined now, lift method dropped (only internal use), rest is stuff that's less critical / less regurarly used
+  - Bugfixes
+</aside>
 
 ---
 
 ## When can I use all this? 😍
+
+<aside class="notes">
+  Beta 9 out now; official release early 2021
+</aside>
 
 ---
 
 ## Thanks!
 
 And have fun with all the new goodies of RxJS 7! 👐
+
+<aside class="notes">
+  Thanks for joining, back to host, answer questions
+</aside>
 
 ---
 
